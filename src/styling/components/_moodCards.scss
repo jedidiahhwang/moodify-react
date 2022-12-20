@@ -1,0 +1,36 @@
+.about-cards-container {
+    position: relative;
+    display: flex;
+    justify-content: space-evenly;
+    height: 10%;
+    width: 20%;
+
+    .about-card {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 90%;
+        width: 70%;
+        border-radius: 5px;
+        margin: 1vh;
+        background-color: #181818d8;
+        box-shadow: rgb(0 0 0 / 30%) 0px 2px 4px 0px;
+        transition: all .2s ease-out;
+
+        .about-card-header {
+            font-family: "Montserrat", sans-serif;
+            font-weight: bolder;
+            color: #FFFFFF;
+        }
+        
+    }
+
+    .about-card:hover {
+        position: relative;
+        transform: scale(1.05);
+        cursor: pointer;
+        overflow: visible;
+        z-index: 100;
+    }
+}
