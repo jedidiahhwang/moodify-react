@@ -171,6 +171,14 @@ const HomePage = () => {
                                         />
                             })}
                     </>
+                // : tracksPlaylists != null ?
+                //     <>
+                //        {
+                //             tracksPlaylists.map((trackObj, index) => {
+                //                 return <p key={index}>{trackObj.track.name}</p>
+                //             })
+                //        }     
+                //     </>
                 : null
             }
 
