@@ -10,6 +10,7 @@ import "../styling/_homePage.scss";
 const HomePage = () => {
     const [currentUser, setCurrentUser] = useState(); // Object containing all user info.
     const [currentUserId, setCurrentUserId] = useState(); // Number for curent logged in user.
+    const [currentSelection, setCurrentSelection] = useState("Nothing");
     const [mood, setMood] = useState();
     const [genre, setGenre] = useState();
     const [playlist, setPlaylistToAdd] = useState([]); // Used for adding one playlist to the user.
@@ -55,12 +56,14 @@ const HomePage = () => {
     const handleMoodUpdate = (selectedMood) => {
         console.log(selectedMood);
         setMood(selectedMood);
+        setCurrentSelection("Mood");
     }
 
     // Set state for genre selected.
     const handleGenreUpdate = (selectedGenre) => {
-        setGenre(selectedGenre);
         console.log(selectedGenre);
+        setGenre(selectedGenre);
+        setCurrentSelection("Mood and Genre");
     }
 
     // Set state for playlist selected to add to user.
@@ -82,11 +85,12 @@ const HomePage = () => {
     // Set state for playlist selected to access tracks for.
     const handlePlaylistSelected = (selectedPlaylistId) => {
         console.log(selectedPlaylistId);
-
+        
         axios.get(`http://localhost:8080/api/spotify/getPlaylistTracks/${selectedPlaylistId}`)
-            .then((res) => {
-                console.log(res.data);
-                setTracksPlaylist(res.data);
+        .then((res) => {
+                console.log(res.data.items);
+                setTracksPlaylist(res.data.items);
+                setCurrentSelection("Playlist Tracks");
             })
             .catch((err) => {
                 console.log(err);
@@ -103,7 +107,7 @@ const HomePage = () => {
                 }
                 <h1>Welcome, Jeddy Hwang</h1>
                 {
-                    mood !== null && genre !== null ?
+                    currentSelection === "Mood and Genre" ?
                     <>
                         <h2>{mood}</h2>
                         <h2>{genre}</h2>
@@ -124,10 +128,8 @@ const HomePage = () => {
             </nav>
             <main id="homepage-content-holder">
             {
-                !mood && !genre ?
+                currentSelection === "Nothing" ?
                     <>
-                        <h2>{mood}</h2>
-                        <h2>{genre}</h2>
                         <MoodCards id="sad-mood-card" mood="Sad" onMoodUpdate={handleMoodUpdate}/>
                         <MoodCards id="anxious-mood-card" mood="Anxious"/>
                         <MoodCards id="cheerful-mood-card "mood="Cheerful"/>
@@ -141,7 +143,7 @@ const HomePage = () => {
                         <MoodCards id="optimistic-mood-card" onMoodUpdate={handleMoodUpdate} mood="Optimistic"/>
                         <MoodCards id="tense-mood-card" onMoodUpdate={handleMoodUpdate} mood="Tense"/>
                     </>
-                : mood && !genre ?
+                : currentSelection === "Mood" ?
                     <>
                         <GenreCards genre="Indie" onGenreUpdate={handleGenreUpdate}/>
                         <GenreCards genre="Afro"/>
@@ -157,7 +159,7 @@ const HomePage = () => {
                         <GenreCards genre="Rock"/>
                         <GenreCards genre="Soul"/>
                     </>
-                : mood && genre && spotifyPlaylists.length > 0 ?
+                : currentSelection === "Mood and Genre" && spotifyPlaylists.length > 0 ?
                     <>
                         {spotifyPlaylists.map((playlist, index) => {
                                 return <PlaylistCards 
@@ -171,14 +173,14 @@ const HomePage = () => {
                                         />
                             })}
                     </>
-                // : tracksPlaylists != null ?
-                //     <>
-                //        {
-                //             tracksPlaylists.map((trackObj, index) => {
-                //                 return <p key={index}>{trackObj.track.name}</p>
-                //             })
-                //        }     
-                //     </>
+                : currentSelection === "Playlist Tracks" ?
+                    <>
+                       {
+                            tracksPlaylists.map((trackObj, index) => {
+                                return <p key={index}>{trackObj.track.name}</p>
+                            })
+                       }     
+                    </>
                 : null
             }
 
