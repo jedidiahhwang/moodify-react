@@ -10,7 +10,7 @@ import "../styling/_homePage.scss";
 const HomePage = () => {
     const [currentUser, setCurrentUser] = useState(); // Object containing all user info.
     const [currentUserId, setCurrentUserId] = useState(); // Number for curent logged in user.
-    const [currentSelection, setCurrentSelection] = useState("Nothing");
+    const [currentSelection, setCurrentSelection] = useState("Select Mood");
     const [mood, setMood] = useState();
     const [genre, setGenre] = useState();
     const [playlist, setPlaylistToAdd] = useState([]); // Used for adding one playlist to the user.
@@ -52,18 +52,35 @@ const HomePage = () => {
         }
     }, [mood, genre])
 
+    // Set state for which button is selected.
+    const handleClick = (event) => {
+        event.preventDefault();
+
+        switch (event.target.id) {
+            case "mood-button":
+                setCurrentSelection("Select Mood");
+                break;
+            case "genre-button":
+                setCurrentSelection("Select Genre");
+                break;
+            case "playlists-button":
+                setCurrentSelection("Select Playlist");
+                break;
+        };
+    }
+
     // Set state for mood selected.
     const handleMoodUpdate = (selectedMood) => {
         console.log(selectedMood);
         setMood(selectedMood);
-        setCurrentSelection("Mood");
+        setCurrentSelection("Select Genre");
     }
 
     // Set state for genre selected.
     const handleGenreUpdate = (selectedGenre) => {
         console.log(selectedGenre);
         setGenre(selectedGenre);
-        setCurrentSelection("Mood and Genre");
+        setCurrentSelection("Select Playlist");
     }
 
     // Set state for playlist selected to add to user.
@@ -71,7 +88,7 @@ const HomePage = () => {
         setPlaylistToAdd(selectedPlaylist);
         console.log(selectedPlaylist);
         
-        axios.post(`http://localhost:8080/playlist/addPlaylist/${currentUserId}`, selectedPlaylist)
+        axios.post(`http://localhost:8080/playlist/addPlaylist/?userId=${currentUserId}&moodId=${selectedPlaylist.moodId}`, selectedPlaylist)
             .then((res) => {
                 console.log(res.data);
                 setUserPlaylists(res.data);
@@ -102,10 +119,15 @@ const HomePage = () => {
             <header id="homepage-header">
                 {
                     currentUser !== undefined ? 
+                    <>
                         <img src={currentUser[4]} />
+                        <h1>Welcome, {currentUser[0]}</h1>
+                        <button id="mood-button" onClick={handleClick}>Mood</button>
+                        <button id="genre-button" onClick={handleClick}>Genre</button>
+                        <button id="playlists-button"onClick={handleClick}>Playlists</button>
+                    </>
                     : null
                 }
-                <h1>Welcome, Jeddy Hwang</h1>
                 {
                     currentSelection === "Mood and Genre" ?
                     <>
@@ -117,6 +139,21 @@ const HomePage = () => {
             </header>
             <nav id="homepage-sidebar">
                 <h1>Playlists</h1>
+                <select id="mood-select">
+                    <option value="all">All Moods</option>
+                    <option value="sad">Sad</option>
+                    <option value="anxious">Anxious</option>
+                    <option value="cheerful">Cheerful</option>
+                    <option value="empty">Empty</option>
+                    <option value="frustrated">Frustrated</option>
+                    <option value="hyped">Hyped</option>
+                    <option value="idyllic">Idyllic</option>
+                    <option value="infatuated">Infatuated</option>
+                    <option value="lonely">Lonely</option>
+                    <option value="melancholy">Melancholy</option>
+                    <option value="optimistic">Optimistic</option>
+                    <option value="tense">Tense</option>
+                </select>
                 {
                     userPlaylists.length > 0 ?
                         userPlaylists.map((playlist, index) => {
@@ -128,7 +165,7 @@ const HomePage = () => {
             </nav>
             <main id="homepage-content-holder">
             {
-                currentSelection === "Nothing" ?
+                currentSelection === "Select Mood" ?
                     <>
                         <MoodCards id="sad-mood-card" mood="Sad" onMoodUpdate={handleMoodUpdate}/>
                         <MoodCards id="anxious-mood-card" mood="Anxious"/>
@@ -143,7 +180,7 @@ const HomePage = () => {
                         <MoodCards id="optimistic-mood-card" onMoodUpdate={handleMoodUpdate} mood="Optimistic"/>
                         <MoodCards id="tense-mood-card" onMoodUpdate={handleMoodUpdate} mood="Tense"/>
                     </>
-                : currentSelection === "Mood" ?
+                : currentSelection === "Select Genre" ?
                     <>
                         <GenreCards genre="Indie" onGenreUpdate={handleGenreUpdate}/>
                         <GenreCards genre="Afro"/>
@@ -159,7 +196,7 @@ const HomePage = () => {
                         <GenreCards genre="Rock"/>
                         <GenreCards genre="Soul"/>
                     </>
-                : currentSelection === "Mood and Genre" && spotifyPlaylists.length > 0 ?
+                : currentSelection === "Select Playlist" && spotifyPlaylists.length > 0 ?
                     <>
                         {spotifyPlaylists.map((playlist, index) => {
                                 return <PlaylistCards 

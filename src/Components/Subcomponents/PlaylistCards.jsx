@@ -9,22 +9,20 @@ const PlaylistCards = ({playlistName, mood, imageUrl, tracksEndpoint, playlistUr
 
     const handlePlaylistUpdate = (event) => {
         // Create an object and lift the object state to HomePage.
-        
-        /*
-        private Long id;
-        private String playlistName;
-        private String mood;
-        private String imageUrl;
-        private String playlistUrl;
-        private UserDto userDto;
-        */
+        let moodId;
+
+        switch(mood) {
+            case "Sad": 
+                moodId = 1;
+                break;
+        }
        
        // Needs name, playlistUrl, and mood for now.
        const playlistObj = {
            playlistName,
            playlistUrl,
            imageUrl,
-           mood
+           moodId
         }
         onPlaylistUpdate(playlistObj);
     }
