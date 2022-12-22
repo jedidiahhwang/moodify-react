@@ -12,7 +12,9 @@ const HomePage = () => {
     const [currentUserId, setCurrentUserId] = useState(); // Number for curent logged in user.
     const [currentSelection, setCurrentSelection] = useState("Select Mood");
     const [mood, setMood] = useState();
+    const [moodId, setMoodId] = useState(0);
     const [genre, setGenre] = useState();
+    const [genreId, setGenreId] = useState(0);
     const [playlist, setPlaylistToAdd] = useState([]); // Used for adding one playlist to the user.
     const [spotifyPlaylists, setSpotifyPlaylists] = useState([]); // Used for Spotify playlists.
     const [userPlaylists, setUserPlaylists] = useState([]); // Used for user's playlist.
@@ -73,6 +75,44 @@ const HomePage = () => {
     const handleMoodUpdate = (selectedMood) => {
         console.log(selectedMood);
         setMood(selectedMood);
+        switch(selectedMood) {
+            case "Anxious":
+                setMoodId(1);
+                break;
+            case "Cheerful":
+                setMoodId(2);
+                break;
+            case "Empty":
+                setMoodId(3);
+                break;
+            case "Frustrated":
+                setMoodId(4);
+                break;
+            case "Hyped":
+                setMoodId(5);
+                break;
+            case "Idyllic":
+                setMoodId(6);
+                break;
+            case "Infatuated":
+                setMoodId(7);
+                break;
+            case "Lonely":
+                setMoodId(8);
+                break;
+            case "Melancholy":
+                setMoodId(9);
+                break;
+            case "Optimistic":
+                setMoodId(10);
+                break;
+            case "Sad":
+                setMoodId(11);
+                break;
+            case "Tense":
+                setMoodId(12);
+                break;
+        }
         setCurrentSelection("Select Genre");
     }
 
@@ -80,6 +120,44 @@ const HomePage = () => {
     const handleGenreUpdate = (selectedGenre) => {
         console.log(selectedGenre);
         setGenre(selectedGenre);
+        switch(selectedGenre) {
+            case "Afro":
+                setGenreId(1);
+                break;
+            case "Classical":
+                setGenreId(2);
+                break;
+            case "Country":
+                setGenreId(3);
+                break;
+            case "Electronic":
+                setGenreId(4);
+                break;
+            case "Hip-Hop":
+                setGenreId(5);
+                break;
+            case "Indie":
+                setGenreId(6);
+                break;
+            case "Jazz":
+                setGenreId(7);
+                break;
+            case "Pop":
+                setGenreId(8);
+                break;
+            case "R&B":
+                setGenreId(9);
+                break;
+            case "Reggae":
+                setGenreId(10);
+                break;
+            case "Rock":
+                setGenreId(11);
+                break;
+            case "Soul":
+                setGenreId(12);
+                break;
+        }
         setCurrentSelection("Select Playlist");
     }
 
@@ -88,7 +166,7 @@ const HomePage = () => {
         setPlaylistToAdd(selectedPlaylist);
         console.log(selectedPlaylist);
         
-        axios.post(`http://localhost:8080/playlist/addPlaylist/?userId=${currentUserId}&moodId=${selectedPlaylist.moodId}&genreId=${selectedPlaylist.genreId}`, selectedPlaylist)
+        axios.post(`http://localhost:8080/playlist/addPlaylist/?userId=${currentUserId}&moodId=${moodId}&genreId=${genreId}`, selectedPlaylist)
             .then((res) => {
                 console.log(res.data);
                 setUserPlaylists(res.data);
