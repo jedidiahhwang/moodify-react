@@ -88,7 +88,7 @@ const HomePage = () => {
         setPlaylistToAdd(selectedPlaylist);
         console.log(selectedPlaylist);
         
-        axios.post(`http://localhost:8080/playlist/addPlaylist/?userId=${currentUserId}&moodId=${selectedPlaylist.moodId}`, selectedPlaylist)
+        axios.post(`http://localhost:8080/playlist/addPlaylist/?userId=${currentUserId}&moodId=${selectedPlaylist.moodId}&genreId=${selectedPlaylist.genreId}`, selectedPlaylist)
             .then((res) => {
                 console.log(res.data);
                 setUserPlaylists(res.data);
@@ -203,6 +203,7 @@ const HomePage = () => {
                                             key={index} 
                                             playlistName={playlist.name} 
                                             mood={mood}
+                                            genre={genre}
                                             imageUrl={playlist.images[0].url}
                                             tracksEndpoint={playlist.tracks.href} 
                                             playlistUrl={playlist.externalUrls.externalUrls.spotify} 

@@ -3,17 +3,25 @@ import axios from "axios";
 
 import "../../styling/components/_playlistCards.scss";
 
-const PlaylistCards = ({playlistName, mood, imageUrl, tracksEndpoint, playlistUrl, onPlaylistUpdate}) => {
+const PlaylistCards = ({playlistName, mood, genre, imageUrl, tracksEndpoint, playlistUrl, onPlaylistUpdate}) => {
     const [playlistObj, setPlaylistToAddObj] = useState({});
     const [style, setStyle] = useState({display: "none"});
 
     const handlePlaylistUpdate = (event) => {
         // Create an object and lift the object state to HomePage.
         let moodId;
+        let genreId;
 
+        // Eventually refactor this into HomePage.
         switch(mood) {
             case "Sad": 
                 moodId = 1;
+                break;
+        }
+
+        switch(genre) {
+            case "Indie":
+                genreId = 1;
                 break;
         }
        
@@ -22,7 +30,8 @@ const PlaylistCards = ({playlistName, mood, imageUrl, tracksEndpoint, playlistUr
            playlistName,
            playlistUrl,
            imageUrl,
-           moodId
+           moodId,
+           genreId
         }
         onPlaylistUpdate(playlistObj);
     }
