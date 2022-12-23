@@ -8,30 +8,11 @@ const PlaylistCards = ({playlistName, mood, genre, imageUrl, tracksEndpoint, pla
     const [style, setStyle] = useState({display: "none"});
 
     const handlePlaylistUpdate = (event) => {
-        // Create an object and lift the object state to HomePage.
-        let moodId;
-        let genreId;
-
-        // Eventually refactor this into HomePage.
-        switch(mood) {
-            case "Sad": 
-                moodId = 1;
-                break;
-        }
-
-        switch(genre) {
-            case "Indie":
-                genreId = 1;
-                break;
-        }
-       
        // Needs name, playlistUrl, and mood for now.
        const playlistObj = {
            playlistName,
            playlistUrl,
-           imageUrl,
-           moodId,
-           genreId
+           imageUrl
         }
         onPlaylistUpdate(playlistObj);
     }

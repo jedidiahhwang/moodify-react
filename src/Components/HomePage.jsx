@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
+import SpotifyPlayer from "react-spotify-web-playback";
 
 import MoodCards from "./Subcomponents/MoodCards";
 import GenreCards from "./Subcomponents/GenreCards";
@@ -19,6 +20,7 @@ const HomePage = () => {
     const [spotifyPlaylists, setSpotifyPlaylists] = useState([]); // Used for Spotify playlists.
     const [userPlaylists, setUserPlaylists] = useState([]); // Used for user's playlist.
     const [tracksPlaylists, setTracksPlaylist] = useState(); // Used for playlist whose tracks you are accessing.
+    const [play, setPlay] = useState(false);
 
     useEffect(() => {
         console.log("Activating useEffect");
@@ -299,8 +301,21 @@ const HomePage = () => {
                     </>
                 : null
             }
-
+            {
+                currentUser ? 
+                    <SpotifyPlayer 
+                        token={currentUser[7]}
+                        showSaveIcon
+                        callback={(state) => {
+                            if(!state.isPlaying) setPlay(false);
+                        }}
+                        play={play}
+                        uris={["spotify:artist:6HQYnRM4OzToCYPpVBInuU"]}
+                    />
+                : null
+            }
             </main>
+            
             
                 {/* <MoodCards mood="Angry"/>
                 <MoodCards mood="Anxious"/>
