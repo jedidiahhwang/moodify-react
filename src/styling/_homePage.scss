@@ -22,16 +22,29 @@
         background-color: grey;
     }
 
-    main {
+    #homepage-content-holder {
         grid-area: main;
         display: flex;
         flex-wrap: wrap;
         overflow-y: scroll;
+        height: 80vh;
 
         .mood-buttons {
             height: 25%;
             width: 20%;
             margin: 20px;
         }
+
+        p {
+            color: white;
+        }
+    }
+
+    #spotify-player-container {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        // height: 20vh;
+        // width: 100vw;
     }
 }

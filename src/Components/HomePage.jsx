@@ -21,6 +21,7 @@ const HomePage = () => {
     const [userPlaylists, setUserPlaylists] = useState([]); // Used for user's playlist.
     const [tracksPlaylists, setTracksPlaylist] = useState(); // Used for playlist whose tracks you are accessing.
     const [play, setPlay] = useState(false);
+    const [trackUri, setTrackUri] = useState();
 
     useEffect(() => {
         console.log("Activating useEffect");
@@ -53,8 +54,12 @@ const HomePage = () => {
                     // Set the state for all 20 playlists coming back from Spotify API.
                     setSpotifyPlaylists(res.data.playlists.items);
                 })
-        }
+        } 
     }, [mood, genre])
+
+    useEffect(() => {
+        setPlay(true);
+    }, [trackUri])
 
     // Set state for which button is selected.
     const handleClick = (event) => {
@@ -62,12 +67,15 @@ const HomePage = () => {
 
         switch (event.target.id) {
             case "mood-button":
+                console.log(event.target.id);
                 setCurrentSelection("Select Mood");
                 break;
             case "genre-button":
+                console.log(event.target.id);
                 setCurrentSelection("Select Genre");
                 break;
             case "playlists-button":
+                console.log(event.target.id);
                 setCurrentSelection("Select Playlist");
                 break;
         };
@@ -194,6 +202,11 @@ const HomePage = () => {
             })
     }
 
+    const handlePlayTrack = (selectedTrack) => {
+        console.log(selectedTrack);
+        setTrackUri(selectedTrack);
+    }
+
     return (
         <div id="homepage-main-div">
             <header id="homepage-header">
@@ -219,21 +232,6 @@ const HomePage = () => {
             </header>
             <nav id="homepage-sidebar">
                 <h1>Playlists</h1>
-                <select id="mood-select">
-                    <option value="all">All Moods</option>
-                    <option value="sad">Sad</option>
-                    <option value="anxious">Anxious</option>
-                    <option value="cheerful">Cheerful</option>
-                    <option value="empty">Empty</option>
-                    <option value="frustrated">Frustrated</option>
-                    <option value="hyped">Hyped</option>
-                    <option value="idyllic">Idyllic</option>
-                    <option value="infatuated">Infatuated</option>
-                    <option value="lonely">Lonely</option>
-                    <option value="melancholy">Melancholy</option>
-                    <option value="optimistic">Optimistic</option>
-                    <option value="tense">Tense</option>
-                </select>
                 {
                     userPlaylists.length > 0 ?
                         userPlaylists.map((playlist, index) => {
@@ -247,9 +245,8 @@ const HomePage = () => {
             {
                 currentSelection === "Select Mood" ?
                     <>
-                        <MoodCards id="sad-mood-card" mood="Sad" onMoodUpdate={handleMoodUpdate}/>
-                        <MoodCards id="anxious-mood-card" mood="Anxious"/>
-                        <MoodCards id="cheerful-mood-card "mood="Cheerful"/>
+                        <MoodCards id="anxious-mood-card" mood="Anxious" onMoodUpdate={handleMoodUpdate}/>
+                        <MoodCards id="cheerful-mood-card "mood="Cheerful" onMoodUpdate={handleMoodUpdate}/>
                         <MoodCards id="empty-mood-card" onMoodUpdate={handleMoodUpdate} mood="Empty"/>
                         <MoodCards id="frustrated-mood-card" onMoodUpdate={handleMoodUpdate} mood="Frustrated"/>
                         <MoodCards id="hyped-mood-card" onMoodUpdate={handleMoodUpdate} mood="Hyped"/>
@@ -258,23 +255,23 @@ const HomePage = () => {
                         <MoodCards id="lonely-mood-card" onMoodUpdate={handleMoodUpdate} mood="Lonely"/>
                         <MoodCards id="melancholy-mood-card" onMoodUpdate={handleMoodUpdate} mood="Melancholy"/>
                         <MoodCards id="optimistic-mood-card" onMoodUpdate={handleMoodUpdate} mood="Optimistic"/>
+                        <MoodCards id="sad-mood-card" mood="Sad" onMoodUpdate={handleMoodUpdate}/>
                         <MoodCards id="tense-mood-card" onMoodUpdate={handleMoodUpdate} mood="Tense"/>
                     </>
                 : currentSelection === "Select Genre" ?
                     <>
+                        <GenreCards genre="Afro" onGenreUpdate={handleGenreUpdate}/>
+                        <GenreCards genre="Classical" onGenreUpdate={handleGenreUpdate}/>
+                        <GenreCards genre="Country" onGenreUpdate={handleGenreUpdate}/>
+                        <GenreCards genre="Dance/Electronic" onGenreUpdate={handleGenreUpdate}/>
+                        <GenreCards genre="Hip-Hop" onGenreUpdate={handleGenreUpdate}/>
                         <GenreCards genre="Indie" onGenreUpdate={handleGenreUpdate}/>
-                        <GenreCards genre="Afro"/>
-                        <GenreCards genre="Classical"/>
-                        <GenreCards genre="Country"/>
-                        <GenreCards genre="Dance/Electronic"/>
-                        <GenreCards genre="Hip-Hop"/>
-                        <GenreCards genre="Indie"/>
-                        <GenreCards genre="Jazz"/>
-                        <GenreCards genre="Pop"/>
-                        <GenreCards genre="R&B"/>
-                        <GenreCards genre="Reggae"/>
-                        <GenreCards genre="Rock"/>
-                        <GenreCards genre="Soul"/>
+                        <GenreCards genre="Jazz" onGenreUpdate={handleGenreUpdate}/>
+                        <GenreCards genre="Pop" onGenreUpdate={handleGenreUpdate}/>
+                        <GenreCards genre="R&B" onGenreUpdate={handleGenreUpdate}/>
+                        <GenreCards genre="Reggae" onGenreUpdate={handleGenreUpdate}/>
+                        <GenreCards genre="Rock" onGenreUpdate={handleGenreUpdate}/>
+                        <GenreCards genre="Soul" onGenreUpdate={handleGenreUpdate}/>
                     </>
                 : currentSelection === "Select Playlist" && spotifyPlaylists.length > 0 ?
                     <>
@@ -295,26 +292,38 @@ const HomePage = () => {
                     <>
                        {
                             tracksPlaylists.map((trackObj, index) => {
-                                return <p key={index}>{trackObj.track.name}</p>
+                                return <p key={index} onClick={() => handlePlayTrack(trackObj.track.uri)}>{trackObj.track.name}</p>
                             })
                        }     
                     </>
                 : null
             }
-            {
-                currentUser ? 
-                    <SpotifyPlayer 
-                        token={currentUser[7]}
-                        showSaveIcon
-                        callback={(state) => {
-                            if(!state.isPlaying) setPlay(false);
-                        }}
-                        play={play}
-                        uris={["spotify:artist:6HQYnRM4OzToCYPpVBInuU"]}
-                    />
-                : null
-            }
             </main>
+            <div id="spotify-player-container">
+                {
+                    currentUser ? 
+                        <SpotifyPlayer 
+                            id="spotify-player"
+                            token={currentUser[7]}
+                            showSaveIcon
+                            callback={(state) => {
+                                if(!state.isPlaying) setPlay(false);
+                            }}
+                            play={play}
+                            uris={trackUri ? [trackUri] : []}
+                            styles={{
+                                activeColor: '#fff',
+                                bgColor: '#333',
+                                color: '#fff',
+                                loaderColor: '#fff',
+                                sliderColor: '#1cb954',
+                                trackArtistColor: '#ccc',
+                                trackNameColor: '#fff',
+                            }}
+                        />
+                    : null
+                }
+            </div>
             
             
                 {/* <MoodCards mood="Angry"/>
