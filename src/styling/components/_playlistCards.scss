@@ -19,18 +19,26 @@
         background-color: #181818d8;
         transition: all .2s ease-out;
 
+        .playlist-images {
+            height: 60%;
+            width: 50%;
+        }
+
         .playlist-card-header {
             font-family: "Montserrat", sans-serif;
             font-weight: bolder;
-            font-size: 75%;
+            font-size: 50%;
             width: 40%;
             margin: auto;
             color: #FFFFFF;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .add-button {
             position: absolute;
-            bottom: 100px;
+            bottom: 50px;
             height: 50px;
             width: 50px;
             border-radius: 100%;

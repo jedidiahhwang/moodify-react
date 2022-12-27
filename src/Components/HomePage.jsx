@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import SpotifyPlayer from "react-spotify-web-playback";
+import {Audio} from "react-loading-icons";
 
 import MoodCards from "./Subcomponents/MoodCards";
 import GenreCards from "./Subcomponents/GenreCards";
@@ -65,24 +66,17 @@ const HomePage = () => {
     const handleClick = (event) => {
         event.preventDefault();
 
-        setMood();
-        setMoodId(0);
-        setGenre();
-        setGenreId(0);
-        // setSpotifyPlaylists();
-
+        
         switch (event.target.id) {
             case "reset-button":
                 console.log(event.target.id);
                 setCurrentSelection("Select Mood");
-                break;
-            case "genre-button":
-                console.log(event.target.id);
-                setCurrentSelection("Select Genre");
-                break;
-            case "playlists-button":
-                console.log(event.target.id);
-                setCurrentSelection("Select Playlist");
+                setMood();
+                setMoodId(0);
+                setGenre();
+                setGenreId(0);
+                setSpotifyPlaylists([]);
+                console.log(spotifyPlaylists);
                 break;
         };
     }
@@ -150,40 +144,40 @@ const HomePage = () => {
                 setGenreId(1);
                 break;
             case "Blues":
-                setGenreId(2);
+                setGenreId(13);
                 break;
             case "Classical":
-                setGenreId(3);
+                setGenreId(2);
                 break;
             case "Country":
-                setGenreId(4);
+                setGenreId(3);
                 break;
             case "Electronic":
-                setGenreId(5);
+                setGenreId(4);
                 break;
             case "Hip-Hop":
-                setGenreId(6);
+                setGenreId(5);
                 break;
             case "Indie":
-                setGenreId(7);
+                setGenreId(6);
                 break;
             case "Jazz":
-                setGenreId(8);
+                setGenreId(7);
                 break;
             case "Pop":
-                setGenreId(9);
+                setGenreId(8);
                 break;
             case "R&B":
-                setGenreId(10);
+                setGenreId(9);
                 break;
             case "Reggae":
-                setGenreId(11);
+                setGenreId(10);
                 break;
             case "Rock":
-                setGenreId(12);
+                setGenreId(11);
                 break;
             case "Soul":
-                setGenreId(13);
+                setGenreId(12);
                 break;
             case "Synth":
                 setGenreId(14);
@@ -309,7 +303,9 @@ const HomePage = () => {
                     </>
                     : currentSelection === "Select Playlist" && spotifyPlaylists.length === 0 ?
                     <>
-                        <h1>Loading</h1>
+                        <div id="audio-loading-holder">
+                            <Audio />   
+                        </div>
                     </>
                 : currentSelection === "Select Playlist" && spotifyPlaylists.length > 0 ?
                     <>
@@ -371,34 +367,12 @@ const HomePage = () => {
                                 loaderColor: '#fff',
                                 sliderColor: '#1cb954',
                                 trackArtistColor: '#ccc',
-                                trackNameColor: '#fff',
+                                trackNameColor: '#fff'
                             }}
                         />
                     : null
                 }
             </div>
-            
-            
-                {/* <MoodCards mood="Angry"/>
-                <MoodCards mood="Anxious"/>
-                <MoodCards mood="Cheerful"/>
-                <MoodCards mood="Empty"/>
-                <MoodCards mood="Frustrated"/>
-                <MoodCards mood="Hyped"/>
-                <MoodCards mood="Idyllic"/>
-                <MoodCards mood="Infatuated"/>
-                <MoodCards mood="Lonely"/>
-                <MoodCards mood="Melancholy"/>
-                <MoodCards mood="Optimistic"/>
-                <MoodCards mood="Tense"/> */}
-
-                {/* <h1>{currentUser.birthdate}</h1>
-                <h1>{currentUser.country}</h1>
-                <h1>{currentUser.displayName}</h1>
-                <h1>{currentUser.email}</h1>
-                <h1>{currentUser.externalUrls.spotify}</h1>
-                <h1>{currentUser.id}</h1>
-                <img src={currentUser.images[0].url} /> */}
         </div>
     )
 }
