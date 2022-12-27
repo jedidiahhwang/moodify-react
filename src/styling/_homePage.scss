@@ -6,37 +6,125 @@
         "header header" auto
         "aside main " 1fr /
         auto 1fr;
-    background-color: #121212;
+    background-color: #121212d8;
 
     #homepage-header {
         grid-area: header;
         display: flex;
-        height: 12.5vh;
+        justify-content: space-between;
+        height: 20vh;
+        align-items: center;
         width: 100%;
-        background-color: aqua;
+        background-image: linear-gradient(#D2758B, #011321);
+
+        #header-content-left {
+            height: 100%;
+            width: 30%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+
+            #profile-picture {
+                height: 15vh;
+                width: 15vh;
+                border-radius: 50%;
+            }
+
+            #welcome-user-header {
+                color: white;
+                font-family: "Montserrat", sans-serif;
+            }
+        }
+
+        #header-content-right {
+            height: 100%;
+            width: 30%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+
+            .header-buttons {
+                height: 5vh;
+                width: 30%;
+                border-radius: 5px;
+                background-color: #151E30;
+                font-size: 16px;
+                font-family: "Montserrat", sans-serif;
+                color: white;
+                border-color: #151E30;
+                cursor: pointer;
+                transition: all .2s ease-out;
+            }
+
+            .header-buttons:hover {
+                transform: scale(1.05);
+            }
+        }
+
     }
 
-    nav {
+    #homepage-sidebar {
         grid-area: aside;
         width: 15vw;
-        background-color: grey;
+        background-color: #121212;
+
+        #playlists-header {
+            color: white;
+            font-family: "Montserrat", sans-serif;
+            margin: 10px;
+        }
+
+        #line {
+            height: 2px;
+            width: 90%;
+            background-color: white;
+            margin: auto;
+            padding: 0;
+        }
+
+        .playlist-names {
+            color: white;
+            font-family: "Montserrat", sans-serif;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all .2s ease-out;
+        }
+
+        .playlist-names:hover {
+            transform: scale(1.05);
+        }
     }
 
     #homepage-content-holder {
-        grid-area: main;
+        // grid-area: main;
         display: flex;
         flex-wrap: wrap;
         overflow-y: scroll;
         height: 80vh;
+        width: 100%;
 
         .mood-buttons {
             height: 25%;
             width: 20%;
-            margin: 20px;
         }
 
         p {
             color: white;
+        }
+
+        #track-album-artist-header {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .track-holders {
+            display: flex;
+            justify-content: space-between;
+
+            .album-cover {
+                height: 100px;
+                width: 100px;
+            }
         }
     }
 

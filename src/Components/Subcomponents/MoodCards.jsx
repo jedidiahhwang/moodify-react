@@ -10,7 +10,7 @@ const MoodCards = ({mood, onMoodUpdate}) => {
     }
 
     return (
-        <div class="about-cards-container" id={mood} onClick={handleMoodClick}>
+        <div className="about-cards-container" id={mood} onClick={handleMoodClick}>
             <section className="about-card" id={mood}>
                 <h3 className="about-card-header">{mood}</h3>
             </section>

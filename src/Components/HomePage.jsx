@@ -65,8 +65,14 @@ const HomePage = () => {
     const handleClick = (event) => {
         event.preventDefault();
 
+        setMood();
+        setMoodId(0);
+        setGenre();
+        setGenreId(0);
+        // setSpotifyPlaylists();
+
         switch (event.target.id) {
-            case "mood-button":
+            case "reset-button":
                 console.log(event.target.id);
                 setCurrentSelection("Select Mood");
                 break;
@@ -122,6 +128,15 @@ const HomePage = () => {
             case "Tense":
                 setMoodId(12);
                 break;
+            case "Tragic":
+                setMoodId(13);
+                break;
+            case "Unhappy":
+                setMoodId(14);
+                break;
+            case "Victorious":
+                setMoodId(15);
+                break;
         }
         setCurrentSelection("Select Genre");
     }
@@ -134,38 +149,47 @@ const HomePage = () => {
             case "Afro":
                 setGenreId(1);
                 break;
-            case "Classical":
+            case "Blues":
                 setGenreId(2);
                 break;
-            case "Country":
+            case "Classical":
                 setGenreId(3);
                 break;
-            case "Electronic":
+            case "Country":
                 setGenreId(4);
                 break;
-            case "Hip-Hop":
+            case "Electronic":
                 setGenreId(5);
                 break;
-            case "Indie":
+            case "Hip-Hop":
                 setGenreId(6);
                 break;
-            case "Jazz":
+            case "Indie":
                 setGenreId(7);
                 break;
-            case "Pop":
+            case "Jazz":
                 setGenreId(8);
                 break;
-            case "R&B":
+            case "Pop":
                 setGenreId(9);
                 break;
-            case "Reggae":
+            case "R&B":
                 setGenreId(10);
                 break;
-            case "Rock":
+            case "Reggae":
                 setGenreId(11);
                 break;
-            case "Soul":
+            case "Rock":
                 setGenreId(12);
+                break;
+            case "Soul":
+                setGenreId(13);
+                break;
+            case "Synth":
+                setGenreId(14);
+                break;
+            case "Trap":
+                setGenreId(15);
                 break;
         }
         setCurrentSelection("Select Playlist");
@@ -213,11 +237,14 @@ const HomePage = () => {
                 {
                     currentUser !== undefined ? 
                     <>
-                        <img src={currentUser[4]} />
-                        <h1>Welcome, {currentUser[0]}</h1>
-                        <button id="mood-button" onClick={handleClick}>Mood</button>
-                        <button id="genre-button" onClick={handleClick}>Genre</button>
-                        <button id="playlists-button"onClick={handleClick}>Playlists</button>
+                        <div id="header-content-left">
+                            <img id="profile-picture" src={currentUser[4]} />
+                            <h2 id="welcome-user-header">{currentUser[0]}</h2>
+                        </div>
+                        <div id="header-content-right">
+                            <button className="header-buttons" id="reset-button" onClick={handleClick}>Reset</button>
+                            <button className="header-buttons" id="about-button" onClick={handleClick}>About</button>
+                        </div>
                     </>
                     : null
                 }
@@ -231,12 +258,13 @@ const HomePage = () => {
                 }
             </header>
             <nav id="homepage-sidebar">
-                <h1>Playlists</h1>
+                <h1 id="playlists-header">Playlists</h1>
+                <div id="line"></div>
                 {
                     userPlaylists.length > 0 ?
                         userPlaylists.map((playlist, index) => {
                             const playlistId = playlist.playlistUrl.split("/")[4];
-                            return <p key={index} id={playlistId} onClick={() => handlePlaylistSelected(playlistId)}>{playlist.playlistName}</p>
+                            return <p key={index} className="playlist-names" id={playlistId} onClick={() => handlePlaylistSelected(playlistId)}>{playlist.playlistName}</p>
                         })
                     : null
                 }
@@ -257,10 +285,14 @@ const HomePage = () => {
                         <MoodCards id="optimistic-mood-card" onMoodUpdate={handleMoodUpdate} mood="Optimistic"/>
                         <MoodCards id="sad-mood-card" mood="Sad" onMoodUpdate={handleMoodUpdate}/>
                         <MoodCards id="tense-mood-card" onMoodUpdate={handleMoodUpdate} mood="Tense"/>
+                        <MoodCards id="tragic-mood-card" onMoodUpdate={handleMoodUpdate} mood="Tragic"/>
+                        <MoodCards id="unhappy-mood-card" onMoodUpdate={handleMoodUpdate} mood="Unhappy"/>
+                        <MoodCards id="victorious-mood-card" onMoodUpdate={handleMoodUpdate} mood="Victorious"/>
                     </>
                 : currentSelection === "Select Genre" ?
                     <>
                         <GenreCards genre="Afro" onGenreUpdate={handleGenreUpdate}/>
+                        <GenreCards genre="Blues" onGenreUpdate={handleGenreUpdate}/>
                         <GenreCards genre="Classical" onGenreUpdate={handleGenreUpdate}/>
                         <GenreCards genre="Country" onGenreUpdate={handleGenreUpdate}/>
                         <GenreCards genre="Dance/Electronic" onGenreUpdate={handleGenreUpdate}/>
@@ -272,6 +304,12 @@ const HomePage = () => {
                         <GenreCards genre="Reggae" onGenreUpdate={handleGenreUpdate}/>
                         <GenreCards genre="Rock" onGenreUpdate={handleGenreUpdate}/>
                         <GenreCards genre="Soul" onGenreUpdate={handleGenreUpdate}/>
+                        <GenreCards genre="Synth" onGenreUpdate={handleGenreUpdate}/>
+                        <GenreCards genre="Trap" onGenreUpdate={handleGenreUpdate}/>
+                    </>
+                    : currentSelection === "Select Playlist" && spotifyPlaylists.length === 0 ?
+                    <>
+                        <h1>Loading</h1>
                     </>
                 : currentSelection === "Select Playlist" && spotifyPlaylists.length > 0 ?
                     <>
@@ -289,13 +327,28 @@ const HomePage = () => {
                             })}
                     </>
                 : currentSelection === "Playlist Tracks" ?
-                    <>
-                       {
+                <>
+                    <div id="track-album-artist-header">
+                        <h2>Track</h2>
+                        <h2>Album</h2>
+                        <h2>Artist</h2>
+                    </div>
+                        {
                             tracksPlaylists.map((trackObj, index) => {
-                                return <p key={index} onClick={() => handlePlayTrack(trackObj.track.uri)}>{trackObj.track.name}</p>
+                                index++;
+                                return (
+                                    <div className="track-holders">
+                                        <p>{index}</p>
+                                        <img className="album-cover" src={trackObj.track.album.images[0].url} />
+                                        <p key={index} onClick={() => handlePlayTrack(trackObj.track.uri)}>{trackObj.track.name}</p>
+                                        <p key={index}>{trackObj.track.album.name}</p>
+                                        <p key={index}>{trackObj.track.artists[0].name}</p>
+
+                                    </div>
+                                )
                             })
-                       }     
-                    </>
+                        }     
+                </>
                 : null
             }
             </main>
