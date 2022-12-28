@@ -237,7 +237,6 @@ const HomePage = () => {
                         </div>
                         <div id="header-content-right">
                             <button className="header-buttons" id="reset-button" onClick={handleClick}>Reset</button>
-                            <button className="header-buttons" id="about-button" onClick={handleClick}>About</button>
                         </div>
                     </>
                     : null
@@ -324,26 +323,30 @@ const HomePage = () => {
                     </>
                 : currentSelection === "Playlist Tracks" ?
                 <>
-                    <div id="track-album-artist-header">
-                        <h2>Track</h2>
-                        <h2>Album</h2>
-                        <h2>Artist</h2>
-                    </div>
-                        {
-                            tracksPlaylists.map((trackObj, index) => {
-                                index++;
-                                return (
-                                    <div className="track-holders">
-                                        <p>{index}</p>
-                                        <img className="album-cover" src={trackObj.track.album.images[0].url} />
-                                        <p key={index} onClick={() => handlePlayTrack(trackObj.track.uri)}>{trackObj.track.name}</p>
-                                        <p key={index}>{trackObj.track.album.name}</p>
-                                        <p key={index}>{trackObj.track.artists[0].name}</p>
+                    <div id="playlist-track-container">
+                        <div id="track-album-artist-header">
+                            <div id="track-header-container">
+                                <h2 className="track-page-headers">Track</h2>
+                                <h2 className="track-page-headers">Album</h2>
+                                <h2 className="track-page-headers">Artist</h2>
+                            </div>
+                        </div>
+                            {
+                                tracksPlaylists.map((trackObj, index) => {
+                                    index++;
+                                    return (
+                                        <div className="track-holders">
+                                            <p className="track-number">{index}</p>
+                                            <img className="album-cover" src={trackObj.track.album.images[0].url} />
+                                            <p className="track-name" key={index} onClick={() => handlePlayTrack(trackObj.track.uri)}>{trackObj.track.name}</p>
+                                            <p className="track-album-name" key={index}>{trackObj.track.album.name}</p>
+                                            <p className="track-artist-name" key={index}>{trackObj.track.artists[0].name}</p>
 
-                                    </div>
-                                )
-                            })
-                        }     
+                                        </div>
+                                    )
+                                })
+                            }     
+                    </div>
                 </>
                 : null
             }

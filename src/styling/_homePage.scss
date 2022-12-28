@@ -108,24 +108,43 @@
             width: 20%;
         }
 
-        p {
-            color: white;
-        }
+        #playlist-track-container {
+            width: 100%;
 
-        #track-album-artist-header {
-            display: flex;
-            justify-content: space-between;
-        }
+            #track-album-artist-header {
+                display: flex;
+                justify-content: flex-end;
 
-        .track-holders {
-            display: flex;
-            justify-content: space-between;
+                #track-header-container {
+                    display: flex;
+                    width: 75%;
+                    justify-content: space-evenly;
+                }
+            }
+    
+            .track-holders {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
 
-            .album-cover {
-                height: 100px;
-                width: 100px;
+                .album-cover {
+                    max-width: 100px;
+                    max-height: 100px;
+                    height: auto;
+                    width: auto;
+                }
+    
+                .track-name, .track-album-name, .track-artist-name {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100px;
+                    width: 200px;
+                }
             }
         }
+
 
         #audio-loading-holder {
             height: 100%;
@@ -134,6 +153,10 @@
             justify-content: center;
             align-items: center;
         }
+    }
+
+    .track-page-headers {
+        color: white;
     }
 
     #spotify-player-container {
